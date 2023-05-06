@@ -44,6 +44,5 @@ int main()
     createArray(&marks, 10, 2);
     setVal(&marks);
     show(&marks);
-
     return 0;
 }
