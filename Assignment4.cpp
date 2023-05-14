@@ -28,7 +28,7 @@ public:
         capacity = n;
         arr = new int[capacity];
         top = -1;
-        std::cout << "Set of capacity " << n + 1 << " created." << std::endl;
+        // std::cout << "Set of capacity " << n + 1 << " created." << std::endl;
     }
     void create(int size);
     void add(int newElement);
@@ -58,16 +58,18 @@ void Set::add(int newElement)
     if (top >= capacity)
     {
         std::cout << "Set Overflow cannot add elements" << std::endl;
+        return;
     }
     else if (this->contains(newElement))
     {
-        std::cout << "Set already contains this element." << std::endl;
+        // std::cout << "Set already contains this element." << std::endl;
+        return;
     }
     else
     {
         top++;
         arr[top] = newElement;
-        std::cout << "Element " << newElement << " was added to the set." << std::endl;
+        // std::cout << "Element " << newElement << " was added to the set." << std::endl;
     }
 }
 
@@ -85,7 +87,7 @@ void Set::remove(int element)
             {
                 this->arr[i] = this->top;
                 top--;
-                std::cout << "The element " << element << " was removed from the set." << std::endl;
+                // std::cout << "The element " << element << " was removed from the set." << std::endl;
                 return;
             }
         }
@@ -138,7 +140,6 @@ Set *Set::uni(Set B)
     {
         C->add(this->arr[i]);
     }
-
     for (int i = 0; i < B.top + 1; i++)
     {
         for (int j = 0; j < this->top; j++)
@@ -155,14 +156,24 @@ Set *Set::uni(Set B)
 Set *Set::diff(Set B)
 {
     Set *C = new Set(this->capacity + B.capacity);
+    int flag;
     for (int i = 0; i < this->top + 1; i++)
     {
         for (int j = 0; j < B.top + 1; j++)
         {
-            if (this->arr[i] != B.arr[j])
+            if (this->arr[i] == B.arr[j])
             {
-                C->add(this->arr[i]);
+                flag = 0;
+                break;
             }
+            else
+            {
+                flag = 1;
+            }
+        }
+        if (flag == 1)
+        {
+            C->add(this->arr[i]);
         }
     }
     return C;
@@ -199,13 +210,13 @@ int main()
     Set A(sizeA - 1), B(sizeB - 1), *C;
     int ch, ch2, x;
     char ans, setName;
-    std::cout << "\nCreate set A: " << std::endl;
-    A.create(sizeA);
-    std::cout << "\nCreate set B: " << std::endl;
-    B.create(sizeB);
+    // std::cout << "\nCreate set A: " << std::endl;
+    // A.create(sizeA);
+    // std::cout << "\nCreate set B: " << std::endl;
+    // B.create(sizeB);
     do
     {
-        std::cout << "\nWhich operation do you want to perform on sets?\n1. Add element\n2. Remove element\n3. Check if a set contains an element\n4. Size of set\n5. Display a set\n6. Intersection of the 2 sets\n7. Union of the 2 sets\n8. Difference of 2 sets\n9. Check if a set is subset of another\nEnter your choice: ";
+        std::cout << "\nWhich operation do you want to perform on sets?\n1. Add element\n2. Remove element\n3. Check if a set contains an element\n4. Size of set\n5. Display a set\n6. Intersection of the 2 sets\n7. Union of the 2 sets\n8. Difference of 2 sets\n9. Check if a set is subset of another\n10. Exit\nEnter your choice: ";
         std::cin >> ch;
         switch (ch)
         {
@@ -217,10 +228,12 @@ int main()
             if (setName == 'A' || setName == 'a')
             {
                 A.add(x);
+                std::cout << "Element " << x << " was added to the set A." << std::endl;
             }
             else if (setName == 'B' || setName == 'b')
             {
                 B.add(x);
+                std::cout << "Element " << x << " was added to the set B." << std::endl;
             }
             else
                 std::cout << "Invalid Set!!!";
@@ -234,10 +247,12 @@ int main()
             if (setName == 'A' || setName == 'a')
             {
                 A.remove(x);
+                std::cout << "The element " << x << " was removed from the set A." << std::endl;
             }
             else if (setName == 'B' || setName == 'b')
             {
                 B.remove(x);
+                std::cout << "The element " << x << " was removed from the set B." << std::endl;
             }
             else
                 std::cout << "Invalid Set!!!";
@@ -378,12 +393,15 @@ int main()
             }
             break;
 
+        case 10:
+            std::cout << "Exiting program." << std::endl;
+            goto end;
+
         default:
             break;
         }
-        std::cout << "Do you want to continue or exit?\nPress any key to continue\nPress N to exit" << std::endl;
-        std::cin >> ans;
-    } while (ans != 'N' || ans != 'n');
 
+    } while (ch != 10);
+end:
     return 0;
 }
