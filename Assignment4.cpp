@@ -9,7 +9,6 @@ g. Difference between two sets
 h.Subset */
 
 #include <iostream>
-using namespace std;
 
 class Set
 {
@@ -21,7 +20,7 @@ public:
         capacity = 10;
         arr = new int[capacity];
         top = -1;
-        cout << "Set of default capacity 10 created." << endl;
+        std::cout << "Set of default capacity 10 created." << std::endl;
     }
 
     Set(int n)
@@ -29,34 +28,46 @@ public:
         capacity = n;
         arr = new int[capacity];
         top = -1;
-        cout << "Set of capacity " << n + 1 << " created." << endl;
+        std::cout << "Set of capacity " << n + 1 << " created." << std::endl;
     }
+    void create(int size);
     void add(int newElement);
     void remove(int element);
     bool contains(int element);
     int size();
-    Set *intersection(Set *B);
-    Set *uni(Set *B);
-    Set *diff(Set *B);
-    bool subset(Set *B);
+    Set *intersection(Set B);
+    Set *uni(Set B);
+    Set *diff(Set B);
+    bool subset(Set B);
     void display();
 };
+
+void Set::create(int size)
+{
+    int x;
+    std::cout << "Enter Elements" << std::endl;
+    for (int i = 0; i < size; i++)
+    {
+        std::cin >> x;
+        this->add(x);
+    }
+}
 
 void Set::add(int newElement)
 {
     if (top >= capacity)
     {
-        cout << "Set Overflow cannot add elements" << endl;
+        std::cout << "Set Overflow cannot add elements" << std::endl;
     }
     else if (this->contains(newElement))
     {
-        cout << "Set already contains this element." << endl;
+        std::cout << "Set already contains this element." << std::endl;
     }
     else
     {
         top++;
         arr[top] = newElement;
-        cout << "Element " << newElement << " was added to the set." << endl;
+        std::cout << "Element " << newElement << " was added to the set." << std::endl;
     }
 }
 
@@ -64,7 +75,7 @@ void Set::remove(int element)
 {
     if (top < 0)
     {
-        cout << "Set is empty, cannot delete anymore elements." << endl;
+        std::cout << "Set is empty, cannot delete anymore elements." << std::endl;
     }
     else
     {
@@ -74,24 +85,24 @@ void Set::remove(int element)
             {
                 this->arr[i] = this->top;
                 top--;
-                cout << "The element " << element << " was removed from the set." << endl;
+                std::cout << "The element " << element << " was removed from the set." << std::endl;
                 return;
             }
         }
-        cout << "Element not found." << endl;
+        std::cout << "Element not found." << std::endl;
     }
 }
 
 bool Set::contains(int element)
 {
-    if (this->arr[top] < 0)
+    if (top < 0)
     {
         return 0;
     }
 
     for (int i = 0; i < size(); i++)
     {
-        if (this->arr[i] == element)
+        if (arr[i] == element)
         {
             return 1;
         }
@@ -101,54 +112,54 @@ bool Set::contains(int element)
 
 int Set::size()
 {
-    return this->arr[top] + 1;
+    return top + 1;
 }
 
-Set *Set::intersection(Set *B)
+Set *Set::intersection(Set B)
 {
-    Set *C = new Set(this->arr[capacity] + B->arr[capacity]);
-    for (int i = 0; i < this->size(); i++)
+    Set *C = new Set(this->capacity + B.capacity);
+    for (int i = 0; i < this->top + 1; i++)
     {
-        for (int j = 0; j < B->size(); j++)
+        for (int j = 0; j < B.top + 1; j++)
         {
-            if (this->arr[i] == B->arr[j])
+            if (this->arr[i] == B.arr[j])
             {
-                C->add(B->arr[j]);
+                C->add(B.arr[j]);
             }
         }
     }
     return C;
 }
 
-Set *Set::uni(Set *B)
+Set *Set::uni(Set B)
 {
-    Set *C = new Set(this->arr[capacity] + B->arr[capacity]);
-    for (int i = 0; i < this->size(); i++)
+    Set *C = new Set(this->capacity + B.capacity);
+    for (int i = 0; i < this->top + 1; i++)
     {
         C->add(this->arr[i]);
     }
 
-    for (int i = 0; i < B->size(); i++)
+    for (int i = 0; i < B.top + 1; i++)
     {
-        for (int j = 0; j < this->size() - 1; j++)
+        for (int j = 0; j < this->top; j++)
         {
-            if (B->arr[i] != this->arr[j])
+            if (B.arr[i] != this->arr[j])
             {
-                C->add(B->arr[i]);
+                C->add(B.arr[i]);
             }
         }
     }
     return C;
 }
 
-Set *Set::diff(Set *B)
+Set *Set::diff(Set B)
 {
-    Set *C = new Set(this->arr[capacity] + B->arr[capacity]);
-    for (int i = 0; i < this->size(); i++)
+    Set *C = new Set(this->capacity + B.capacity);
+    for (int i = 0; i < this->top + 1; i++)
     {
-        for (int j = 0; j < B->size(); j++)
+        for (int j = 0; j < B.top + 1; j++)
         {
-            if (this->arr[i] != B->arr[j])
+            if (this->arr[i] != B.arr[j])
             {
                 C->add(this->arr[i]);
             }
@@ -157,13 +168,13 @@ Set *Set::diff(Set *B)
     return C;
 }
 
-bool Set::subset(Set *B)
+bool Set::subset(Set B)
 {
-    for (int i = 0; i < B->size(); i++)
+    for (int i = 0; i < B.size(); i++)
     {
         for (int j = 0; j < this->size(); j++)
         {
-            if (!B->contains(this->arr[j]))
+            if (!B.contains(this->arr[j]))
                 return 0;
         }
     }
@@ -172,187 +183,197 @@ bool Set::subset(Set *B)
 
 void Set::display()
 {
-    cout << "{ ";
+    std::cout << "{";
     for (int i = 0; i < this->top; i++)
     {
-        cout << this->arr[i] << ",";
+        std::cout << this->arr[i] << ", ";
     }
-    cout << this->arr[top] << "}" << endl;
+    std::cout << this->arr[top] << "}" << std::endl;
 }
 
 int main()
 {
     int sizeA, sizeB;
-    cout << "Enter the size you want to allot to set A and B:\n"
-         << endl;
-    cin >> sizeA >> sizeB;
+    std::cout << "Enter the size you want to allot to set A and B:" << std::endl;
+    std::cin >> sizeA >> sizeB;
     Set A(sizeA - 1), B(sizeB - 1), *C;
     int ch, ch2, x;
     char ans, setName;
+    std::cout << "\nCreate set A: " << std::endl;
+    A.create(sizeA);
+    std::cout << "\nCreate set B: " << std::endl;
+    B.create(sizeB);
     do
     {
-        cout << "Which operation do you want to perform on sets?\n1. Add element\n2. Remove element\n3. Check if a set contains an element\n4. Size of set\n5. Display a set\n6. Intersection of the 2 sets\n7. Union of the 2 sets\n8. Difference of 2 sets\n9. Check if a set is subset of another\nEnter your choice: ";
-        cin >> ch;
+        std::cout << "\nWhich operation do you want to perform on sets?\n1. Add element\n2. Remove element\n3. Check if a set contains an element\n4. Size of set\n5. Display a set\n6. Intersection of the 2 sets\n7. Union of the 2 sets\n8. Difference of 2 sets\n9. Check if a set is subset of another\nEnter your choice: ";
+        std::cin >> ch;
         switch (ch)
         {
         case 1:
-            cout << "Enter element you want to add: " << endl;
-            cin >> x;
-            cout << "Which set do you want to add it to? A or B: " << endl;
-            cin >> setName;
-            if (setName == 'A')
+            std::cout << "Which set do you want to add it to? A or B: " << std::endl;
+            std::cin >> setName;
+            std::cout << "Enter element you want to add: " << std::endl;
+            std::cin >> x;
+            if (setName == 'A' || setName == 'a')
             {
                 A.add(x);
-                cout << "Element added to set A." << endl;
             }
-            if (setName == 'B')
+            else if (setName == 'B' || setName == 'b')
             {
                 B.add(x);
-                cout << "Element added to set B." << endl;
             }
+            else
+                std::cout << "Invalid Set!!!";
             break;
 
         case 2:
-            cout << "Enter element you want to remove: " << endl;
-            cin >> x;
-            cout << "Which set do you want to remove it from? A or B: " << endl;
-            cin >> setName;
-            if (setName == 'A')
+            std::cout << "Which set do you want to remove it from? A or B: " << std::endl;
+            std::cin >> setName;
+            std::cout << "Enter element you want to remove: " << std::endl;
+            std::cin >> x;
+            if (setName == 'A' || setName == 'a')
             {
                 A.remove(x);
-                cout << "Element " << x << " removed from set A." << endl;
             }
-            if (setName == 'B')
+            else if (setName == 'B' || setName == 'b')
             {
                 B.remove(x);
-                cout << "Element " << x << " removed from set B." << endl;
             }
+            else
+                std::cout << "Invalid Set!!!";
             break;
 
         case 3:
-            cout << "Enter element you want to check: " << endl;
-            cin >> x;
-            cout << "Which set do you want to check in? A or B: " << endl;
-            cin >> setName;
-            if (setName == 'A')
+            std::cout << "Which set do you want to check in? A or B: " << std::endl;
+            std::cin >> setName;
+            std::cout << "Enter element you want to check: " << std::endl;
+            std::cin >> x;
+            if (setName == 'A' || setName == 'a')
             {
                 if (A.contains(x))
                 {
-                    cout << "Element " << x << " is in set A." << endl;
+                    std::cout << "Element " << x << " is in set A." << std::endl;
                 }
                 else
                 {
-                    cout << "Element " << x << " is not in set A." << endl;
+                    std::cout << "Element " << x << " is not in set A." << std::endl;
                 }
             }
-            if (setName == 'B')
+            else if (setName == 'B' || setName == 'b')
             {
                 if (B.contains(x))
                 {
-                    cout << "Element " << x << " is in set B." << endl;
+                    std::cout << "Element " << x << " is in set B." << std::endl;
                 }
                 else
                 {
-                    cout << "Element " << x << " is not in set B." << endl;
+                    std::cout << "Element " << x << " is not in set B." << std::endl;
                 }
             }
+            else
+                std::cout << "Invalid Set!!!";
             break;
 
         case 4:
-            cout << "Which set do you want the size of? A or B: " << endl;
-            cin >> setName;
-            if (setName == 'A')
+            std::cout << "Which set do you want the size of? A or B: " << std::endl;
+            std::cin >> setName;
+            if (setName == 'A' || setName == 'a')
             {
-                cout << "Set A has size " << A.size() << endl;
+                std::cout << "Set A has size " << A.size() << std::endl;
             }
-            if (setName == 'B')
+            else if (setName == 'B' || setName == 'b')
             {
-                cout << "Set B has size " << B.size() << endl;
+                std::cout << "Set B has size " << B.size() << std::endl;
             }
+            else
+                std::cout << "Invalid Set!!!";
             break;
 
         case 5:
-            cout << "Which set do you want to see? A or B: " << endl;
-            cin >> setName;
-            if (setName == 'A')
+            std::cout << "Which set do you want to see? A or B: " << std::endl;
+            std::cin >> setName;
+            if (setName == 'A' || setName == 'a')
             {
-                cout << "Set A : ";
+                std::cout << "Set A : ";
                 A.display();
-                cout << endl;
+                std::cout << std::endl;
             }
-            if (setName == 'B')
+            else if (setName == 'B' || setName == 'b')
             {
-                cout << "Set B : ";
+                std::cout << "Set B : ";
                 B.display();
-                cout << endl;
+                std::cout << std::endl;
             }
+            else
+                std::cout << "Invalid Set!!!";
             break;
 
         case 6:
-            cout << "Intersection of  A & B is: ";
-            C = A.intersection(&B);
-            cout << endl;
+            C = A.intersection(B);
+            std::cout << "Intersection of  A & B is: ";
+            C->display();
+            std::cout << std::endl;
             break;
 
         case 7:
-            cout << "Union of  A & B is: ";
-            C = A.uni(&B);
+            C = A.uni(B);
+            std::cout << "Union of  A & B is: ";
             C->display();
-            cout << endl;
+            std::cout << std::endl;
             break;
 
         case 8:
-            cout << "1. A-B\n2. B-A?\nEnter which one do you want to see: ";
-            cin >> ch2;
+            std::cout << "1. A-B\n2. B-A?\nEnter which one do you want to see: ";
+            std::cin >> ch2;
             switch (ch2)
             {
             case 1:
-                cout << "Difference of  A & B is: ";
-                C = A.diff(&B);
+                C = A.diff(B);
+                std::cout << "Difference of  A & B is: ";
                 C->display();
-                cout << endl;
+                std::cout << std::endl;
                 break;
             case 2:
-                cout << "Difference of  B & A is: ";
-                C = B.diff(&A);
+                C = B.diff(A);
+                std::cout << "Difference of  B & A is: ";
                 C->display();
-                cout << endl;
+                std::cout << std::endl;
                 break;
 
             default:
-                cout << "Invalid choice." << endl;
+                std::cout << "Invalid choice." << std::endl;
                 break;
             }
             break;
 
         case 9:
-            cout << "1. A subset of B\n2. B is subset of A\nEnter which one do you want to see: ";
-            cin >> ch2;
+            std::cout << "1. A subset of B\n2. B is subset of A\nEnter which one do you want to see: ";
+            std::cin >> ch2;
             switch (ch2)
             {
             case 1:
-                if (A.subset(&B))
+                if (A.subset(B))
                 {
-                    cout << "A is a subset of B." << endl;
+                    std::cout << "A is a subset of B." << std::endl;
                 }
                 else
                 {
-                    cout << "A is not a subset of B." << endl;
+                    std::cout << "A is not a subset of B." << std::endl;
                 }
                 break;
             case 2:
-                if (B.subset(&A))
+                if (B.subset(A))
                 {
-                    cout << "B is a subset of A." << endl;
+                    std::cout << "B is a subset of A." << std::endl;
                 }
                 else
                 {
-                    cout << "B is not a subset of A." << endl;
+                    std::cout << "B is not a subset of A." << std::endl;
                 }
                 break;
 
             default:
-                cout << "Invalid choice." << endl;
+                std::cout << "Invalid choice." << std::endl;
                 break;
             }
             break;
@@ -360,8 +381,8 @@ int main()
         default:
             break;
         }
-        cout << "Do you want to continue or exit?\nPress any key to continue\nPress N to exit" << endl;
-        cin >> ans;
+        std::cout << "Do you want to continue or exit?\nPress any key to continue\nPress N to exit" << std::endl;
+        std::cin >> ans;
     } while (ans != 'N' || ans != 'n');
 
     return 0;
