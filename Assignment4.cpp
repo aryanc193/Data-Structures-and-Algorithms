@@ -42,7 +42,8 @@ public:
     void display();
 };
 
-void Set::create(int size)
+//****CAUSES MALFUNCTION IN OPERATIONS****
+/* void Set::create(int size)
 {
     int x;
     std::cout << "Enter Elements" << std::endl;
@@ -51,7 +52,7 @@ void Set::create(int size)
         std::cin >> x;
         this->add(x);
     }
-}
+} */
 
 void Set::add(int newElement)
 {
@@ -135,14 +136,14 @@ Set *Set::intersection(Set B)
 
 Set *Set::uni(Set B)
 {
-    Set *C = new Set(this->capacity + B.capacity);
+    Set *C = new Set(this->capacity + B.capacity+1);
     for (int i = 0; i < this->top + 1; i++)
     {
         C->add(this->arr[i]);
     }
     for (int i = 0; i < B.top + 1; i++)
     {
-        for (int j = 0; j < this->top; j++)
+        for (int j = 0; j < this->top +1; j++)
         {
             if (B.arr[i] != this->arr[j])
             {
@@ -155,7 +156,7 @@ Set *Set::uni(Set B)
 
 Set *Set::diff(Set B)
 {
-    Set *C = new Set(this->capacity + B.capacity);
+    Set *C = new Set(this->capacity + B.capacity +1);
     int flag;
     for (int i = 0; i < this->top + 1; i++)
     {
@@ -210,10 +211,13 @@ int main()
     Set A(sizeA - 1), B(sizeB - 1), *C;
     int ch, ch2, x;
     char ans, setName;
-    // std::cout << "\nCreate set A: " << std::endl;
-    // A.create(sizeA);
-    // std::cout << "\nCreate set B: " << std::endl;
-    // B.create(sizeB);
+
+    //**MALFUNCTIONAL**
+    /* std::cout << "\nCreate set A: " << std::endl;
+    A.create(sizeA);
+    std::cout << "\nCreate set B: " << std::endl;
+    B.create(sizeB); */
+    
     do
     {
         std::cout << "\nWhich operation do you want to perform on sets?\n1. Add element\n2. Remove element\n3. Check if a set contains an element\n4. Size of set\n5. Display a set\n6. Intersection of the 2 sets\n7. Union of the 2 sets\n8. Difference of 2 sets\n9. Check if a set is subset of another\n10. Exit\nEnter your choice: ";
