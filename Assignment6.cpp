@@ -34,6 +34,10 @@ class BST
     friend void menu(BST tree);
 };
 
+void BST::create()
+{
+}
+
 int main()
 {
     
