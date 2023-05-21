@@ -36,6 +36,7 @@ class BST
 
 void BST::create()
 {
+    
 }
 
 int main()
