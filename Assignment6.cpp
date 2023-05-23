@@ -36,7 +36,18 @@ class BST
 
 void BST::create()
 {
-    
+int noOfElements, data;
+    std::cout << "How many elements to be inserted for initialization of the BST: " << std::endl;
+    std::cin >> noOfElements;
+    std::cout << "\nEnter the first element (ROOT): " << std::endl;
+    std::cin >> data;
+    root = insert(root, data);
+    for (int i = 0; i < noOfElements; i++)
+    {
+        std::cout << "Enter (" << i + 1 << ")th element: " << std::endl;
+        std::cin >> data;
+        root = insert(root, data);
+    }
 }
 
 int main()
