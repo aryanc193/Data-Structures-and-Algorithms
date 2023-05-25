@@ -50,7 +50,9 @@ int noOfElements, data;
     }
 }
 
-
+node *insert(node *t, int d)
+{
+    
 
 int main()
 {
