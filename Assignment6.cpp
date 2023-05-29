@@ -50,10 +50,26 @@ int noOfElements, data;
     }
 }
 
-node *insert(node *t, int d)
+node *BST::insert(node *t, int d)
 {
-   
-}    
+    if (t == NULL)
+    {
+        node *p = new node;
+        p->data = d;
+        p->left = NULL;
+        p->right = NULL;
+        t = p;
+    }
+    else if (t->data > d)
+    {
+        t->left = insert(t->left, d);
+    }
+    else
+    {
+        t->right = insert(t->right, d);
+    }
+    return t;
+}
 
 int main()
 {
