@@ -71,6 +71,16 @@ node *BST::insert(node *t, int d)
     return t;
 }
 
+void BST::display(node *t)
+{
+    if (t != NULL)
+    {
+        display(t->left);
+        std::cout << t->data << "  " << std::endl;
+        display(t->right);
+    }
+}
+
 int main()
 {
     
