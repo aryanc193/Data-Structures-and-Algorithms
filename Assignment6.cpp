@@ -81,6 +81,11 @@ void BST::display(node *t)
     }
 }
 
+int BST::min()
+{
+    
+}
+
 int main()
 {
     
